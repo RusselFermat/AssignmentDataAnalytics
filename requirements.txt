@@ -1,8 +1,6 @@
-Packages Required
-
-- streamlit
-- matplotlib
-- pandas
-- plotly.express
-- numpy
-- seaborn
+streamlit
+matplotlib
+pandas
+plotly.express
+numpy
+seaborn
