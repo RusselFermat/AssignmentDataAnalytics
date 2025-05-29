@@ -6,4 +6,4 @@ import numpy as np
 import seaborn as sb
 
 st.title("""Welcome to my Dashboard
-This is my first time using streamlit.""")
+And I don't wanna learn another scent""")
