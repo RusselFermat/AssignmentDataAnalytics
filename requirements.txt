@@ -5,3 +5,4 @@ pandas
 plotly.express
 numpy
 seaborn
+testing
