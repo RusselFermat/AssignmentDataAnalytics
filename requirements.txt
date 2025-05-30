@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 matplotlib
-=======
 streamlit
 matplotlib
 pandas
 plotly.express
 numpy
 seaborn
->>>>>>> 82adae69c7d338bded8253a3126b84c053cf029e
-test
