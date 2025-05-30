@@ -4,4 +4,3 @@ pandas
 plotly.express
 numpy
 seaborn
-test
