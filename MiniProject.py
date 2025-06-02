@@ -14,24 +14,24 @@ st.set_page_config(
 def load_data():
     # Load data from CSV file
     # Replace 'your_data.csv' with your actual file path
-    fuckyou = pd.read_csv('careerdata.csv')
+    df = pd.read_csv('careerdata.csv')
     
     # Data cleaning and preprocessing (if needed)
     # Example: Convert columns to proper types
-    if 'Starting_Salary' in fuckyou.columns:
-        fuckyou['Starting_Salary'] = pd.to_numeric(fuckyou['Starting_Salary'], errors='coerce')
-    if 'University_GPA' in fuckyou.columns:
-        fuckyou['University_GPA'] = pd.to_numeric(fuckyou['University_GPA'], errors='coerce')
+    if 'Starting_Salary' in df.columns:
+        df['Starting_Salary'] = pd.to_numeric(df['Starting_Salary'], errors='coerce')
+    if 'University_GPA' in df.columns:
+        df['University_GPA'] = pd.to_numeric(df['University_GPA'], errors='coerce')
     
-    return fuckyou
+    return df
 
-fuckyou = load_data()
+df = load_data()
 
 # Sidebar filters
 st.sidebar.header("Filter Data")
 
 # Dynamic field selection based on available data
-available_fields = fuckyou['Field_of_Study'].unique() if 'Field_of_Study' in fuckyou.columns else []
+available_fields = df['Field_of_Study'].unique() if 'Field_of_Study' in df.columns else []
 selected_fields = st.sidebar.multiselect(
     "Select Fields of Study",
     options=available_fields,
@@ -39,30 +39,30 @@ selected_fields = st.sidebar.multiselect(
 )
 
 # GPA filter (if column exists)
-if 'University_GPA' in fuckyou.columns:
+if 'University_GPA' in df.columns:
     gpa_range = st.sidebar.slider(
         "University GPA Range",
-        min_value=float(fuckyou['University_GPA'].min()),
-        max_value=float(fuckyou['University_GPA'].max()),
-        value=(float(fuckyou['University_GPA'].min()), float(fuckyou['University_GPA'].max()))
+        min_value=float(df['University_GPA'].min()),
+        max_value=float(df['University_GPA'].max()),
+        value=(float(df['University_GPA'].min()), float(df['University_GPA'].max()))
     )
 else:
     gpa_range = (0, 4)  # Default range if column doesn't exist
 
 # Salary filter (if column exists)
-if 'Starting_Salary' in fuckyou.columns:
+if 'Starting_Salary' in df.columns:
     salary_range = st.sidebar.slider(
         "Starting Salary Range ($)",
-        min_value=int(fuckyou['Starting_Salary'].min()),
-        max_value=int(fuckyou['Starting_Salary'].max()),
-        value=(int(fuckyou['Starting_Salary'].min()), int(fuckyou['Starting_Salary'].max()))
+        min_value=int(df['Starting_Salary'].min()),
+        max_value=int(df['Starting_Salary'].max()),
+        value=(int(df['Starting_Salary'].min()), int(df['Starting_Salary'].max()))
     )
 else:
     salary_range = (0, 100000)  # Default range if column doesn't exist
 
 # Gender filter (if column exists)
-if 'Gender' in fuckyou.columns:
-    gender_options = ['All'] + list(fuckyou['Gender'].unique())
+if 'Gender' in df.columns:
+    gender_options = ['All'] + list(df['Gender'].unique())
     gender_filter = st.sidebar.radio(
         "Gender",
         options=gender_options,
@@ -72,25 +72,25 @@ else:
     gender_filter = 'All'
 
 # Apply filters
-filtered_fuckyou = fuckyou.copy()
+filtered_df = df.copy()
 
-if len(selected_fields) > 0 and 'Field_of_Study' in fuckyou.columns:
-    filtered_fuckyou = filtered_fuckyou[filtered_fuckyou['Field_of_Study'].isin(selected_fields)]
+if len(selected_fields) > 0 and 'Field_of_Study' in df.columns:
+    filtered_df = filtered_df[filtered_df['Field_of_Study'].isin(selected_fields)]
 
-if 'University_GPA' in fuckyou.columns:
-    filtered_fuckyou = filtered_fuckyou[
-        (filtered_fuckyou['University_GPA'] >= gpa_range[0]) &
-        (filtered_fuckyou['University_GPA'] <= gpa_range[1])
+if 'University_GPA' in df.columns:
+    filtered_df = filtered_df[
+        (filtered_df['University_GPA'] >= gpa_range[0]) &
+        (filtered_df['University_GPA'] <= gpa_range[1])
     ]
 
-if 'Starting_Salary' in fuckyou.columns:
-    filtered_fuckyou = filtered_fuckyou[
-        (filtered_fuckyou['Starting_Salary'] >= salary_range[0]) &
-        (filtered_fuckyou['Starting_Salary'] <= salary_range[1])
+if 'Starting_Salary' in df.columns:
+    filtered_df = filtered_df[
+        (filtered_df['Starting_Salary'] >= salary_range[0]) &
+        (filtered_df['Starting_Salary'] <= salary_range[1])
     ]
 
-if gender_filter != 'All' and 'Gender' in fuckyou.columns:
-    filtered_fuckyou = filtered_fuckyou[filtered_fuckyou['Gender'] == gender_filter]
+if gender_filter != 'All' and 'Gender' in df.columns:
+    filtered_df = filtered_df[filtered_df['Gender'] == gender_filter]
 
 # Main content
 st.title("🎓 Postgraduate Employability in the US")
@@ -101,32 +101,32 @@ st.subheader("Key Performance Indicators")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    if 'University_GPA' in filtered_fuckyou.columns:
-        st.metric("Average CGPA", f"{filtered_fuckyou['University_GPA'].mean():.2f}")
+    if 'University_GPA' in filtered_df.columns:
+        st.metric("Average CGPA", f"{filtered_df['University_GPA'].mean():.2f}")
     else:
         st.metric("Average CGPA", "N/A")
 
 with col2:
-    if 'Starting_Salary' in filtered_fuckyou.columns:
-        st.metric("Average Salary", f"${filtered_fuckyou['Starting_Salary'].mean():,.0f}")
+    if 'Starting_Salary' in filtered_df.columns:
+        st.metric("Average Salary", f"${filtered_df['Starting_Salary'].mean():,.0f}")
     else:
         st.metric("Average Salary", "N/A")
 
 with col3:
-    if 'Job_Offers' in filtered_fuckyou.columns:
-        st.metric("Total Job Offers", filtered_fuckyou['Job_Offers'].sum())
+    if 'Job_Offers' in filtered_df.columns:
+        st.metric("Total Job Offers", filtered_df['Job_Offers'].sum())
     else:
         st.metric("Total Job Offers", "N/A")
 
 with col4:
-    if 'Internships_Completed' in filtered_fuckyou.columns:
-        st.metric("Total Internships", filtered_fuckyou['Internships_Completed'].sum())
+    if 'Internships_Completed' in filtered_df.columns:
+        st.metric("Total Internships", filtered_df['Internships_Completed'].sum())
     else:
         st.metric("Total Internships", "N/A")
 
 with col5:
-    if 'Projects_Completed' in filtered_fuckyou.columns:
-        st.metric("Total Projects", filtered_fuckyou['Projects_Completed'].sum())
+    if 'Projects_Completed' in filtered_df.columns:
+        st.metric("Total Projects", filtered_df['Projects_Completed'].sum())
     else:
         st.metric("Total Projects", "N/A")
 
@@ -137,9 +137,9 @@ st.subheader("Data Visualizations")
 col1, col2 = st.columns(2)
 
 with col1:
-    if 'Field_of_Study' in filtered_fuckyou.columns:
+    if 'Field_of_Study' in filtered_df.columns:
         st.markdown("#### Percentage of Courses Majored in US")
-        field_counts = filtered_fuckyou['Field_of_Study'].value_counts()
+        field_counts = filtered_df['Field_of_Study'].value_counts()
         fig = px.pie(field_counts, 
                      values=field_counts.values, 
                      names=field_counts.index,
@@ -149,9 +149,9 @@ with col1:
         st.warning("Field_of_Study column not found in data")
 
 with col2:
-    if 'Field_of_Study' in filtered_fuckyou.columns and 'Starting_Salary' in filtered_fuckyou.columns:
+    if 'Field_of_Study' in filtered_df.columns and 'Starting_Salary' in filtered_df.columns:
         st.markdown("#### Annual Starting Salary by Field")
-        fig = px.box(filtered_fuckyou, 
+        fig = px.box(filtered_df, 
                      x='Field_of_Study', 
                      y='Starting_Salary',
                      color='Field_of_Study')
@@ -164,24 +164,24 @@ with col2:
 col1, col2 = st.columns(2)
 
 with col1:
-    if 'University_GPA' in filtered_fuckyou.columns and 'Job_Offers' in filtered_fuckyou.columns:
+    if 'University_GPA' in filtered_df.columns and 'Job_Offers' in filtered_df.columns:
         st.markdown("#### University GPA vs. Job Offers")
-        fig = px.scatter(filtered_fuckyou, 
+        fig = px.scatter(filtered_df, 
                          x='University_GPA', 
                          y='Job_Offers',
-                         color='Field_of_Study' if 'Field_of_Study' in filtered_fuckyou.columns else None,
+                         color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None,
                          trendline="lowess")
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("Required columns for GPA vs Job Offers analysis not found")
 
 with col2:
-    if 'SAT_Score' in filtered_fuckyou.columns:
+    if 'SAT_Score' in filtered_df.columns:
         st.markdown("#### SAT Score Distribution")
-        fig = px.histogram(filtered_fuckyou, 
+        fig = px.histogram(filtered_df, 
                            x='SAT_Score', 
                            nbins=20,
-                           color='Field_of_Study' if 'Field_of_Study' in filtered_fuckyou.columns else None)
+                           color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None)
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("SAT_Score column not found in data")
@@ -190,23 +190,23 @@ with col2:
 col1, col2 = st.columns(2)
 
 with col1:
-    if 'Internships_Completed' in filtered_fuckyou.columns and 'Job_Offers' in filtered_fuckyou.columns:
+    if 'Internships_Completed' in filtered_df.columns and 'Job_Offers' in filtered_df.columns:
         st.markdown("#### Internships vs. Job Offers")
-        fig = px.scatter(filtered_fuckyou, 
+        fig = px.scatter(filtered_df, 
                          x='Internships_Completed', 
                          y='Job_Offers',
-                         size='Starting_Salary' if 'Starting_Salary' in filtered_fuckyou.columns else None,
-                         color='Field_of_Study' if 'Field_of_Study' in filtered_fuckyou.columns else None)
+                         size='Starting_Salary' if 'Starting_Salary' in filtered_df.columns else None,
+                         color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None)
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("Required columns for internships analysis not found")
 
 with col2:
-    if 'Starting_Salary' in filtered_fuckyou.columns:
+    if 'Starting_Salary' in filtered_df.columns:
         st.markdown("#### Salary Distribution by Field")
-        fig = px.histogram(filtered_fuckyou, 
+        fig = px.histogram(filtered_df, 
                            x='Starting_Salary', 
-                           color='Field_of_Study' if 'Field_of_Study' in filtered_fuckyou.columns else None,
+                           color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None,
                            nbins=20,
                            barmode='overlay')
         st.plotly_chart(fig, use_container_width=True)
@@ -215,7 +215,7 @@ with col2:
 
 # Raw data view
 st.subheader("Filtered Data Preview")
-st.dataframe(filtered_fuckyou.head(100), height=300)
+st.dataframe(filtered_df.head(100), height=300)
 
 # Add some explanatory text
 st.markdown("""
@@ -227,7 +227,7 @@ st.markdown("""
 """)
 
 # Add download button for filtered data
-csv = filtered_fuckyou.to_csv(index=False).encode('utf-8')
+csv = filtered_df.to_csv(index=False).encode('utf-8')
 st.download_button(
     label="Download filtered data as CSV",
     data=csv,
