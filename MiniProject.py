@@ -9,6 +9,24 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown("""
+<style>
+    /* Static SVG background */
+    .stApp {
+        background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpattern id='grid' x='0' y='0' width='80' height='80' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 80 0 L 0 0 0 80' fill='none' stroke='%23f0f2f6' stroke-width='1'/%3E%3C/pattern%3E%3Crect width='100%25' height='100%25' fill='white'/%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' opacity='0.3'/%3E%3C/svg%3E");
+        background-attachment: fixed;
+        background-size: cover;
+    }
+    
+    /* Ensure content readability */
+    .st-emotion-cache-1kyxreq {
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 20px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # Animation
 st.markdown("""
 <style>
