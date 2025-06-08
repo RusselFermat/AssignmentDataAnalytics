@@ -9,23 +9,28 @@ st.set_page_config(
     layout="wide"
 )
 
-st.markdown("""
-<style>
-    /* Static SVG background */
+st.markdown(
+    """
+    <style>
     .stApp {
-        background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpattern id='grid' x='0' y='0' width='80' height='80' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 80 0 L 0 0 0 80' fill='none' stroke='%23f0f2f6' stroke-width='1'/%3E%3C/pattern%3E%3Crect width='100%25' height='100%25' fill='white'/%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' opacity='0.3'/%3E%3C/svg%3E");
-        background-attachment: fixed;
+        background-image: url("Background.svg");
         background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: white;  /* Fallback */
     }
     
-    /* Ensure content readability */
-    .st-emotion-cache-1kyxreq {
-        background-color: rgba(255, 255, 255, 0.8);
+    /* Make content cards semi-transparent */
+    .block-container {
+        background-color: rgba(255, 255, 255, 0.9);
         border-radius: 10px;
-        padding: 20px;
+        padding: 2rem;
     }
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Animation
 st.markdown("""
