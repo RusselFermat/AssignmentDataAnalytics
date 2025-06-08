@@ -65,8 +65,8 @@ st.sidebar.header("")  # Empty header for spacing
 
 # Add logo at the top (replace with your image path or URL)
 st.sidebar.image("Logo.png", 
-                 width=200,  # Adjust width as needed
-                 use_container_width=True)  # Responsive sizing
+                 width=200, 
+                 use_container_width=True) 
 st.sidebar.header("Filter Data")
 
 # Dynamic field selection based on available data
