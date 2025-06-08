@@ -9,29 +9,6 @@ st.set_page_config(
     layout="wide"
 )
 
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-image: url("background.svg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-color: white;  /* Fallback */
-    }
-    
-    /* Make content cards semi-transparent */
-    .block-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 10px;
-        padding: 2rem;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Animation
 st.markdown("""
 <style>
