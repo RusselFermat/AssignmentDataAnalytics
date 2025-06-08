@@ -13,7 +13,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("Background.svg");
+        background-image: url("background.svg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
