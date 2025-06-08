@@ -238,15 +238,15 @@ with st.container():
                         color='Field_of_Study')
             fig.update_layout(showlegend=False)
             st.plotly_chart(fig, use_container_width=True)
-            with st.expander("📌 Interpretation Guide", expanded=False):
+            with st.expander("💰 Salary Insights", expanded=False):
                 st.markdown("""
-                **What this shows:**  
-                • Relative popularity of different fields among graduates  
-                **How to use it:**  
-                • Larger slices = More common majors  
-                • Compare STEM vs Humanities proportions  
-                **Pro Tip:**  
-                • Click slices to isolate specific fields  
+                **Key Elements:**  
+                • Box width = Salary range for middle 50% of graduates  
+                • Line = Median salary  
+                • Dots = Exceptional cases  
+                **Actionable Takeaways:**  
+                • Fields with taller boxes have wider salary ranges  
+                • Compare STEM vs Business medians  
                 """)
         else:
             st.warning("Required columns for salary analysis not found")
