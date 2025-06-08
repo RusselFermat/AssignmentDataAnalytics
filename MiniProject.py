@@ -4,7 +4,7 @@ import plotly.express as px
 
 # Set page config
 st.set_page_config(
-    page_title="Postgraduate Employability Dashboard", 
+    page_title="Undergraduate Employability Dashboard (as of February 2025)", 
     page_icon="🎓", 
     layout="wide"
 )
@@ -164,7 +164,7 @@ if gender_filter != 'All' and 'Gender' in df.columns:
 
 with st.container():
     # Main content
-    st.title("🎓 Postgraduate Employability in the US")
+    st.title("🎓 Undergraduate Employability in the US (as of February 2025)")
     st.markdown("Analyzing the relationship between academic performance, field of study, and employment outcomes")
 
     # KPI cards
