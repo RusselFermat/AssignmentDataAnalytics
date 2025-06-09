@@ -260,6 +260,7 @@ with st.container():
     with tab2:
 
         st.subheader("Objective 2: Quantify GPA's Influence on Job Acquisition")
+        st.text("")
         # Second Row of Charts
         col1, col2 = st.columns(2)
 
@@ -324,6 +325,7 @@ with st.container():
     with tab3:
 
         st.subheader("Objective 3: Evaluate Gender Disparities in Employment")
+        st.text("")
         # Third Row of Charts - Replacements
         col1, col2 = st.columns(2)
 
@@ -384,7 +386,7 @@ with st.container():
     with tab4:
 
         st.subheader("Objective 4: Measure Internship ROI")
-
+        st.text("")
         # Fourth Row of Charts
         col1, col2 = st.columns(2)
 
