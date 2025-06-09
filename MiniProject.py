@@ -208,11 +208,9 @@ with st.container():
 
     with tab1:
 
-        st.subheader("Objective 1: Impact of Daily Activities on GPA")
+        st.subheader("Objective 1: Analyze Field-of-Study Impact on Career Outcomes")
         # First Row of Charts
         col1, col2 = st.columns(2)
-
-        
 
         with col1:
             if 'Field_of_Study' in filtered_df.columns:
@@ -260,6 +258,7 @@ with st.container():
 
     with tab2:
 
+        st.subheader("Objective 2: Quantify GPA's Influence on Job Acquisition")
         # Second Row of Charts
         col1, col2 = st.columns(2)
 
@@ -323,6 +322,7 @@ with st.container():
 
     with tab3:
 
+        st.subheader("Objective 3: Evaluate Gender Disparities in Employment")
         # Third Row of Charts - Replacements
         col1, col2 = st.columns(2)
 
@@ -381,6 +381,8 @@ with st.container():
                 st.warning("Required columns for GPA vs Salary analysis not found")
 
     with tab4:
+
+        st.subheader("Objective 4: Measure Internship ROI")
 
         # Fourth Row of Charts
         col1, col2 = st.columns(2)
