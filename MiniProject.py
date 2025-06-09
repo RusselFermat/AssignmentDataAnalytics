@@ -209,6 +209,7 @@ with st.container():
     with tab1:
 
         st.subheader("Objective 1: Analyze Field-of-Study Impact on Career Outcomes")
+        st.text("")
         # First Row of Charts
         col1, col2 = st.columns(2)
 
