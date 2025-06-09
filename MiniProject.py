@@ -210,6 +210,8 @@ with st.container():
         # First Row of Charts
         col1, col2 = st.columns(2)
 
+        st.subheader("Objective 1: Impact of Daily Activities on GPA")
+
         with col1:
             if 'Field_of_Study' in filtered_df.columns:
                 st.markdown("#### Percentage of Courses Majored in US")
