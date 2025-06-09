@@ -204,231 +204,240 @@ with st.container():
     # Charts Section
     st.subheader("Data Visualizations")
 
-    # First Row of Charts
-    col1, col2 = st.columns(2)
+    tab1, tab2, tab3, tab4 = st.tabs([" 🗂️Field Study Impact", " 🗂️GPA Influence on Job", " 🗂️Gender Disparities", " 🗂️Internship ROI"])
 
-    with col1:
-        if 'Field_of_Study' in filtered_df.columns:
-            st.markdown("#### Percentage of Courses Majored in US")
-            field_counts = filtered_df['Field_of_Study'].value_counts()
-            fig = px.pie(field_counts, 
-                        values=field_counts.values, 
-                        names=field_counts.index,
-                        hole=0.3)
-            st.plotly_chart(fig, use_container_width=True)
-            with st.expander("📌 Interpretation Guide", expanded=False):
-                st.markdown("""
-                **What this shows:**  
-                • Relative popularity of different fields among graduates  
-                **How to use it:**  
-                • Larger slices = More common majors  
-                • Compare STEM vs Humanities proportions  
-                **Pro Tip:**  
-                • Click slices to isolate specific fields  
-                """)
-        else:
-            st.warning("Field_of_Study column not found in data")
+    with tab1:
+        # First Row of Charts
+        col1, col2 = st.columns(2)
 
-    with col2:
-        if 'Field_of_Study' in filtered_df.columns and 'Starting_Salary' in filtered_df.columns:
-            st.markdown("#### Annual Starting Salary by Field")
-            fig = px.box(filtered_df, 
-                        x='Field_of_Study', 
-                        y='Starting_Salary',
-                        color='Field_of_Study')
-            fig.update_layout(showlegend=False)
-            st.plotly_chart(fig, use_container_width=True)
-            with st.expander("💰 Salary Insights", expanded=False):
-                st.markdown("""
-                **Key Elements:**  
-                • Box width = Salary range for middle 50% of graduates  
-                • Line = Median salary  
-                • Dots = Exceptional cases  
-                **Actionable Takeaways:**  
-                • Fields with taller boxes have wider salary ranges  
-                • Compare STEM vs Business medians  
-                """)
-        else:
-            st.warning("Required columns for salary analysis not found")
-
-    # Second Row of Charts
-    col1, col2 = st.columns(2)
-
-    with col1:
-            if 'University_GPA' in filtered_df.columns and 'Job_Offers' in filtered_df.columns:
-                st.markdown("#### GPA Distribution by Number of Job Offers")
-                
-                # Convert Job_Offers to categorical for better grouping
-                filtered_df['Job_Offers_Cat'] = filtered_df['Job_Offers'].astype(str) + " Offer(s)"
-                
-                #Violin plot 
-                fig = px.violin(
-                    filtered_df,
-                    x='Job_Offers_Cat',
-                    y='University_GPA',
-                    color='Job_Offers_Cat',
-                    box=True,  # Show box plot inside violin
-                    title="GPA Distribution by Job Offers"
-                )
-                
-                fig.update_layout(
-                    xaxis_title="Number of Job Offers",
-                    yaxis_title="University GPA",
-                    showlegend=False
-                )
+        with col1:
+            if 'Field_of_Study' in filtered_df.columns:
+                st.markdown("#### Percentage of Courses Majored in US")
+                field_counts = filtered_df['Field_of_Study'].value_counts()
+                fig = px.pie(field_counts, 
+                            values=field_counts.values, 
+                            names=field_counts.index,
+                            hole=0.3)
                 st.plotly_chart(fig, use_container_width=True)
-                with st.expander("🎓 GPA vs Offers Guide", expanded=False):
+                with st.expander("📌 Interpretation Guide", expanded=False):
                     st.markdown("""
-                    **Violin Plot Features:**  
-                    • Width = Density of students at each GPA level  
-                    • Inner box = Traditional boxplot statistics  
-                    **Career Insights:**  
-                    • Thicker sections = Common GPA ranges for each offer count   
-                    • Narrow violins = Consistent GPA patterns  
-                    • Wide bases = Diverse academic performance  
+                    **What this shows:**  
+                    • Relative popularity of different fields among graduates  
+                    **How to use it:**  
+                    • Larger slices = More common majors  
+                    • Compare STEM vs Humanities proportions  
+                    **Pro Tip:**  
+                    • Click slices to isolate specific fields  
                     """)
             else:
-                st.warning("Required columns for GPA vs Job Offers analysis not found")
+                st.warning("Field_of_Study column not found in data")
 
-    with col2:
-        if 'SAT_Score' in filtered_df.columns:
-            st.markdown("#### SAT Score Distribution")
-            fig = px.histogram(filtered_df, 
-                            x='SAT_Score', 
-                            nbins=20,
-                            color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None)
-            st.plotly_chart(fig, use_container_width=True)
-            with st.expander("📝 SAT Analysis Notes", expanded=False):
-                st.markdown("""
-                **Patterns to Observe:**  
-                • Left skew = Most students scored high  
-                • Right skew = Many had test-taking challenges  
-                **Admissions Context:**  
-                • Compare peaks between fields  
-                • 1200-1400 = Typical competitive range  
-                **Correlation Check:**  
-                • Filter high SAT scores to see if GPA/salary increases  
-                """)
-        else:
-            st.warning("SAT_Score column not found in data")
-
-    # Third Row of Charts - Replacements
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if 'Field_of_Study' in filtered_df.columns and 'Starting_Salary' in filtered_df.columns:
-            st.markdown("#### Average Salary by Field of Study")
-            avg_salary = filtered_df.groupby('Field_of_Study')['Starting_Salary'].mean().sort_values()
-            fig = px.bar(avg_salary, 
-                        x=avg_salary.values, 
-                        y=avg_salary.index,
-                        orientation='h',
-                        color=avg_salary.values,
-                        color_continuous_scale='Blues',
-                        title='Average Starting Salary by Field')
-            fig.update_layout(yaxis_title="Field of Study", xaxis_title="Average Salary ($)")
-            st.plotly_chart(fig, use_container_width=True)
-            with st.expander("💸 Salary Benchmarking", expanded=False):
-                st.markdown("""
-                **Horizontal Bars Show:**  
-                • Exact average salaries per field  
-                • Color intensity = Higher salaries  
-                **Strategic Insights:**  
-                • Longest bars = Most lucrative fields  
-                • Compare adjacent fields (e.g., CS vs Engineering)  
-                **Caveat:**  
-                • Averages can hide entry-level vs senior pay differences  
-                """)
-        else:
-            st.warning("Required columns for salary analysis not found")
-
-    with col2:
-        if 'University_GPA' in filtered_df.columns and 'Starting_Salary' in filtered_df.columns:
-            st.markdown("#### GPA vs Salary Correlation")
-            fig = px.scatter(filtered_df,
-                            x='University_GPA',
+        with col2:
+            if 'Field_of_Study' in filtered_df.columns and 'Starting_Salary' in filtered_df.columns:
+                st.markdown("#### Annual Starting Salary by Field")
+                fig = px.box(filtered_df, 
+                            x='Field_of_Study', 
                             y='Starting_Salary',
-                            color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None,
-                            trendline="ols",
-                            marginal_x="histogram",
-                            marginal_y="histogram")
-            fig.update_layout(xaxis_title="University GPA", yaxis_title="Starting Salary ($)")
-            st.plotly_chart(fig, use_container_width=True)
-            with st.expander("📈 Trend Analysis", expanded=False):
-                st.markdown("""
-                **Key Components:**  
-                • Dots = Individual graduates  
-                • Trendline = Overall relationship  
-                • Side histograms = Distribution of each variable  
-                **Career Implications:**  
-                • Steep trend = GPA strongly affects starting pay  
-                • Flat trend = Other factors dominate  
-                **Field Differences:**  
-                • Compare color clusters (different majors)  
-                """)
-        else:
-            st.warning("Required columns for GPA vs Salary analysis not found")
+                            color='Field_of_Study')
+                fig.update_layout(showlegend=False)
+                st.plotly_chart(fig, use_container_width=True)
+                with st.expander("💰 Salary Insights", expanded=False):
+                    st.markdown("""
+                    **Key Elements:**  
+                    • Box width = Salary range for middle 50% of graduates  
+                    • Line = Median salary  
+                    • Dots = Exceptional cases  
+                    **Actionable Takeaways:**  
+                    • Fields with taller boxes have wider salary ranges  
+                    • Compare STEM vs Business medians  
+                    """)
+            else:
+                st.warning("Required columns for salary analysis not found")
 
-    # Fourth Row of Charts - Replacements
-    col1, col2 = st.columns(2)
+    with tab2:
 
-    with col1:
-        if 'Internships_Completed' in filtered_df.columns and 'Field_of_Study' in filtered_df.columns:
-            st.markdown("#### Internship Completion by Field")
-            internship_counts = filtered_df.groupby(['Field_of_Study', 'Internships_Completed']).size().reset_index(name='Count')
-            fig = px.bar(internship_counts,
-                        x='Field_of_Study',
-                        y='Count',
-                        color='Internships_Completed',
-                        barmode='group',
-                        title='Internship Completion Count by Field')
-            fig.update_layout(xaxis_title="Field of Study", yaxis_title="Number of Students")
-            st.plotly_chart(fig, use_container_width=True)
-            with st.expander("🛠️ Experience Matters", expanded=False):
-                st.markdown("""
-                **Grouped Bars Reveal:**  
-                • Internship participation rates per field  
-                • Stack height = Total students in each field  
-                **Career Preparation Insights:**  
-                • Fields with more 2+ internship students = Strong industry pipelines  
-                • Low internship fields may rely on academic projects  
-                **Action Item:**  
-                • Compare with salary/job offer charts  
-                """)
-        else:
-            st.warning("Required columns for internship analysis not found")
+        # Second Row of Charts
+        col1, col2 = st.columns(2)
 
-    with col2:
-        if 'Employment_Status' in filtered_df.columns:
-            st.markdown("#### Employment Status Distribution")
-            status_counts = filtered_df['Employment_Status'].value_counts()
-            fig = px.pie(status_counts,
-                        values=status_counts.values,
-                        names=status_counts.index,
-                        hole=0.4,
-                        title='Current Employment Status of Graduates')
-            st.plotly_chart(fig, use_container_width=True)
-        elif 'Job_Offers' in filtered_df.columns:
-            st.markdown("#### Job Offer Distribution")
-            fig = px.histogram(filtered_df,
-                            x='Job_Offers',
-                            nbins=10,
-                            color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None,
-                            title='Distribution of Job Offers Received')
-            st.plotly_chart(fig, use_container_width=True)
-            with st.expander("🏆 Outcomes Breakdown", expanded=False):
-                st.markdown("""
-                **Pie Chart Shows:**  
-                • Immediate post-graduation outcomes  
-                **Critical Metrics:**  
-                • Full-Time % = Quick employment rate  
-                • Unemployed % = Potential issues  
-                **Deep Dive:**  
-                • Filter by field to see which majors struggle  
-                • Compare with internship participation  
-                """)
-        else:
-            st.warning("No employment-related columns found in data")
+        with col1:
+                if 'University_GPA' in filtered_df.columns and 'Job_Offers' in filtered_df.columns:
+                    st.markdown("#### GPA Distribution by Number of Job Offers")
+                    
+                    # Convert Job_Offers to categorical for better grouping
+                    filtered_df['Job_Offers_Cat'] = filtered_df['Job_Offers'].astype(str) + " Offer(s)"
+                    
+                    #Violin plot 
+                    fig = px.violin(
+                        filtered_df,
+                        x='Job_Offers_Cat',
+                        y='University_GPA',
+                        color='Job_Offers_Cat',
+                        box=True,  # Show box plot inside violin
+                        title="GPA Distribution by Job Offers"
+                    )
+                    
+                    fig.update_layout(
+                        xaxis_title="Number of Job Offers",
+                        yaxis_title="University GPA",
+                        showlegend=False
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    with st.expander("🎓 GPA vs Offers Guide", expanded=False):
+                        st.markdown("""
+                        **Violin Plot Features:**  
+                        • Width = Density of students at each GPA level  
+                        • Inner box = Traditional boxplot statistics  
+                        **Career Insights:**  
+                        • Thicker sections = Common GPA ranges for each offer count   
+                        • Narrow violins = Consistent GPA patterns  
+                        • Wide bases = Diverse academic performance  
+                        """)
+                else:
+                    st.warning("Required columns for GPA vs Job Offers analysis not found")
+
+        with col2:
+            if 'SAT_Score' in filtered_df.columns:
+                st.markdown("#### SAT Score Distribution")
+                fig = px.histogram(filtered_df, 
+                                x='SAT_Score', 
+                                nbins=20,
+                                color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None)
+                st.plotly_chart(fig, use_container_width=True)
+                with st.expander("📝 SAT Analysis Notes", expanded=False):
+                    st.markdown("""
+                    **Patterns to Observe:**  
+                    • Left skew = Most students scored high  
+                    • Right skew = Many had test-taking challenges  
+                    **Admissions Context:**  
+                    • Compare peaks between fields  
+                    • 1200-1400 = Typical competitive range  
+                    **Correlation Check:**  
+                    • Filter high SAT scores to see if GPA/salary increases  
+                    """)
+            else:
+                st.warning("SAT_Score column not found in data")
+
+    with tab3:
+
+        # Third Row of Charts - Replacements
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if 'Field_of_Study' in filtered_df.columns and 'Starting_Salary' in filtered_df.columns:
+                st.markdown("#### Average Salary by Field of Study")
+                avg_salary = filtered_df.groupby('Field_of_Study')['Starting_Salary'].mean().sort_values()
+                fig = px.bar(avg_salary, 
+                            x=avg_salary.values, 
+                            y=avg_salary.index,
+                            orientation='h',
+                            color=avg_salary.values,
+                            color_continuous_scale='Blues',
+                            title='Average Starting Salary by Field')
+                fig.update_layout(yaxis_title="Field of Study", xaxis_title="Average Salary ($)")
+                st.plotly_chart(fig, use_container_width=True)
+                with st.expander("💸 Salary Benchmarking", expanded=False):
+                    st.markdown("""
+                    **Horizontal Bars Show:**  
+                    • Exact average salaries per field  
+                    • Color intensity = Higher salaries  
+                    **Strategic Insights:**  
+                    • Longest bars = Most lucrative fields  
+                    • Compare adjacent fields (e.g., CS vs Engineering)  
+                    **Caveat:**  
+                    • Averages can hide entry-level vs senior pay differences  
+                    """)
+            else:
+                st.warning("Required columns for salary analysis not found")
+
+        with col2:
+            if 'University_GPA' in filtered_df.columns and 'Starting_Salary' in filtered_df.columns:
+                st.markdown("#### GPA vs Salary Correlation")
+                fig = px.scatter(filtered_df,
+                                x='University_GPA',
+                                y='Starting_Salary',
+                                color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None,
+                                trendline="ols",
+                                marginal_x="histogram",
+                                marginal_y="histogram")
+                fig.update_layout(xaxis_title="University GPA", yaxis_title="Starting Salary ($)")
+                st.plotly_chart(fig, use_container_width=True)
+                with st.expander("📈 Trend Analysis", expanded=False):
+                    st.markdown("""
+                    **Key Components:**  
+                    • Dots = Individual graduates  
+                    • Trendline = Overall relationship  
+                    • Side histograms = Distribution of each variable  
+                    **Career Implications:**  
+                    • Steep trend = GPA strongly affects starting pay  
+                    • Flat trend = Other factors dominate  
+                    **Field Differences:**  
+                    • Compare color clusters (different majors)  
+                    """)
+            else:
+                st.warning("Required columns for GPA vs Salary analysis not found")
+
+    with tab4:
+
+        # Fourth Row of Charts
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if 'Internships_Completed' in filtered_df.columns and 'Field_of_Study' in filtered_df.columns:
+                st.markdown("#### Internship Completion by Field")
+                internship_counts = filtered_df.groupby(['Field_of_Study', 'Internships_Completed']).size().reset_index(name='Count')
+                fig = px.bar(internship_counts,
+                            x='Field_of_Study',
+                            y='Count',
+                            color='Internships_Completed',
+                            barmode='group',
+                            title='Internship Completion Count by Field')
+                fig.update_layout(xaxis_title="Field of Study", yaxis_title="Number of Students")
+                st.plotly_chart(fig, use_container_width=True)
+                with st.expander("🛠️ Experience Matters", expanded=False):
+                    st.markdown("""
+                    **Grouped Bars Reveal:**  
+                    • Internship participation rates per field  
+                    • Stack height = Total students in each field  
+                    **Career Preparation Insights:**  
+                    • Fields with more 2+ internship students = Strong industry pipelines  
+                    • Low internship fields may rely on academic projects  
+                    **Action Item:**  
+                    • Compare with salary/job offer charts  
+                    """)
+            else:
+                st.warning("Required columns for internship analysis not found")
+
+        with col2:
+            if 'Employment_Status' in filtered_df.columns:
+                st.markdown("#### Employment Status Distribution")
+                status_counts = filtered_df['Employment_Status'].value_counts()
+                fig = px.pie(status_counts,
+                            values=status_counts.values,
+                            names=status_counts.index,
+                            hole=0.4,
+                            title='Current Employment Status of Graduates')
+                st.plotly_chart(fig, use_container_width=True)
+            elif 'Job_Offers' in filtered_df.columns:
+                st.markdown("#### Job Offer Distribution")
+                fig = px.histogram(filtered_df,
+                                x='Job_Offers',
+                                nbins=10,
+                                color='Field_of_Study' if 'Field_of_Study' in filtered_df.columns else None,
+                                title='Distribution of Job Offers Received')
+                st.plotly_chart(fig, use_container_width=True)
+                with st.expander("🏆 Outcomes Breakdown", expanded=False):
+                    st.markdown("""
+                    **Pie Chart Shows:**  
+                    • Immediate post-graduation outcomes  
+                    **Critical Metrics:**  
+                    • Full-Time % = Quick employment rate  
+                    • Unemployed % = Potential issues  
+                    **Deep Dive:**  
+                    • Filter by field to see which majors struggle  
+                    • Compare with internship participation  
+                    """)
+            else:
+                st.warning("No employment-related columns found in data")
 
     # Raw data view
     st.subheader("Filtered Data Preview")
